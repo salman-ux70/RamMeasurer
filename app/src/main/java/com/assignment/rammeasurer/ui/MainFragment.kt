@@ -1,16 +1,22 @@
 package com.assignment.rammeasurer.ui
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +37,18 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     private val binding by lazy { FragmentMainBinding.inflate(layoutInflater) }
+
+    private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                showToast("Notification permission granted")
+            } else {
+                showToast("Notification permission denied")
+            }
+        }
+
 
     private val viewModel: RamUsageViewModel by activityViewModels()
     private var ramUsageService: IRamUsageService? = null
@@ -65,6 +83,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkNotificationPermission()
         binding.seeAll.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToListFragment())
         }
@@ -83,6 +102,20 @@ class MainFragment : Fragment() {
             }
 
         }
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), notificationPermission) == PackageManager.PERMISSION_GRANTED) {
+                showToast("Permission already granted")
+            } else {
+                requestPermissionLauncher.launch(notificationPermission)
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun updataChart(chartData: List<RamUsageEntity>) {
