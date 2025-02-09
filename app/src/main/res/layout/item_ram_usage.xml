@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="8dp"
+
+    android:padding="12dp"
+    android:background="@drawable/bg_item"
+    android:elevation="4dp">
+
+    <!-- Time Text -->
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="12:00 PM"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center" />
+
+    <!-- RAM Used -->
+    <TextView
+        android:id="@+id/tvRamUsed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Used: 1.5 GB"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintEnd_toStartOf="@id/tvRamAvailable"
+        android:paddingTop="6dp"/>
+
+    <!-- RAM Available -->
+    <TextView
+        android:id="@+id/tvRamAvailable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Available: 2.5 GB"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintStart_toEndOf="@id/tvRamUsed"
+        android:paddingTop="6dp"
+        android:gravity="end"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
