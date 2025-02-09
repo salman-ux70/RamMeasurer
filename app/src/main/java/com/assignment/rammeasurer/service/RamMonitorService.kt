@@ -76,7 +76,7 @@ class RamMonitorService : Service() {
                 if (!isMonitoring) return
                 sendRamUsageToClient()
                 saveRamUsageToDatabase()
-                handler.postDelayed(this, /*5 * */10 * 1000) // Repeat every 5 minutes
+                handler.postDelayed(this, 5 * 60 * 1000) // Repeat every 5 minutes
             }
         }, 0)
     }
